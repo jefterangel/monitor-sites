@@ -119,6 +119,11 @@ app.post("/add", (req, res) => {
   res.status(400).json({ message: "Nome ou URL inválido ou já existe" });
 });
 
+// Rota inicial
+app.get("/", (req, res) => {
+  res.send("Monitor de Sites rodando! 🚦");
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
