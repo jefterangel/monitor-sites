@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📊 Monitoramento de Sites - Jarvis</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📡 Monitoramento de Sites</h1>
+    <div id="status-container">
+      <p class="loading">Carregando status...</p>
+    </div>
+  </div>
+
+  <script>
+    async function verificarSites() {
+      const container = document.getElementById('status-container');
+      container.innerHTML = `<table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>URL</th>
+            <th>Status</th>
+            <th>Código HTTP</th>
+            <th>Última Verificação</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>`;
+
+      const tbody = document.getElementById('tbody');
+      try {
+        const response = await fetch('http://localhost:3000/status');
+        const sites = await response.json();
+
+        for (const site of sites) {
+          let classe = site.status.startsWith('Online') ? 'online' : 'offline';
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${site.name || '-'}</td>
+            <td><a href="${site.url}" target="_blank">${site.url}</a></td>
+            <td class="${classe}">${site.status}</td>
+            <td>${site.httpCode !== null && site.httpCode !== undefined ? site.httpCode : '-'}</td>
+            <td>${site.lastChecked || '-'}
+          `;
+          tbody.appendChild(row);
+        }
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="4" class="offline">Erro ao conectar ao servidor backend</td></tr>`;
+      }
+    }
+
+    verificarSites();
+    setInterval(verificarSites, 60000); // Verifica a cada 1 minuto
+  </script>
+</body>
+</html>
