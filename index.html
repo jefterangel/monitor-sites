@@ -32,7 +32,9 @@
 
       const tbody = document.getElementById('tbody');
       try {
-        const API_URL = window.location.origin;
+        const API_URL = window.location.hostname.includes("onrender.com")
+          ? window.location.origin
+          : "https://monitor-sites-t3la.onrender.com";
         const response = await fetch(`${API_URL}/status`);
         const sites = await response.json();
 
