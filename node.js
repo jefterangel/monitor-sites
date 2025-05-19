@@ -136,6 +136,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-
-const API_URL = window.location.origin;
-const response = await fetch(`${API_URL}/status`);
