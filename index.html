@@ -32,7 +32,8 @@
 
       const tbody = document.getElementById('tbody');
       try {
-        const response = await fetch('http://localhost:3000/status');
+        const API_URL = window.location.origin;
+        const response = await fetch(`${API_URL}/status`);
         const sites = await response.json();
 
         for (const site of sites) {
